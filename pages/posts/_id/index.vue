@@ -1,13 +1,19 @@
 <template>
   <div class="single-post-page">
     <section class="post">
-      <h1>Post Title</h1>
+      <h1 class="post-title">
+        {{ loadedPost.title }}
+      </h1>
       <div class="post-details">
-        <div>Last Updated on XXX</div>
-        <div>Post Written By</div>
+        <div class="post-detail">
+          Last updated on {{ loadedPost.updatedDate | date }}
+        </div>
+        <div class="post-detail">
+          Written by {{ loadedPost.author }}
+        </div>
       </div>
-      <p>
-        Post Content
+      <p class="post-content">
+        {{ loadedPost.content }}
       </p>
     </section>
     <section class="post-feedback">
@@ -21,7 +27,24 @@
   </div>
 </template>
 
-<style>
+<script>
+  export default {
+    asyncData() {
+      return context.app.$axios.$get('/posts/' + context.params.id + '.json')
+        .then(data => {
+          return {
+            loadedPost: data
+          }
+        })
+        .catch(e => context.error(e));
+    },
+    head: {
+      title: "A blog post"
+    }
+  }
+</script>
+
+<style scoped>
   .single-post-page {
     padding: 30px;
     text-align: center;
