@@ -43,10 +43,26 @@ const createStore = () => {
           ...post,
           updatedDate: new Date()
         };
+
+        return this.$axios
+          .post()
+          .then()
+          .catch(e => console.log(e));
+      },
+      editPost(vuexContext, editedPost) {
+        return this.$axios
+          .post()
+          .then()
+          .catch(e => console.log(e));
+      },
+      setPosts(vuexContext, posts) {
+        vuexContext.commit("setPosts", posts);
       }
     },
     getters: {
-
+      loadedPosts(state) {
+        return state.loadedPosts;
+      }
     }
   });
 };
