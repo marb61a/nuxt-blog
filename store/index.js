@@ -1,9 +1,11 @@
 import Vuex from 'vue';
+import Cookie from "js-cookie";
 
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      loadedPosts: []
+      loadedPosts: [],
+      token: null
     },
     mutations: {
       setPosts(state, posts) {
@@ -20,7 +22,28 @@ const createStore = () => {
       }
     },
     actions: {
+      nuxtServerInit(vueContext, context) {
+        return context.app.$axios
+          .get("/posts.json")
+          .then(data => {
+            const postsArray = [];
+            for(const key in data){
+              postsArray.push({
+                ...data[key],
+                id: key
+              })
+            }
 
+            vuexContext.commit("setPosts", postsArray);
+          })
+          .catch(e => context.error(e));
+      },
+      addPost(vueContext, post) {
+        const createdPost = {
+          ...post,
+          updatedDate: new Date()
+        };
+      }
     },
     getters: {
 
