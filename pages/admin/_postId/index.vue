@@ -1,7 +1,10 @@
 <template>
   <div class="admin-post-page">
     <section class="update-form">
-      <AdminPostForm :post="loadedPost" />
+      <AdminPostForm
+        :post="loadedPost"
+        @submit="onSubmitted"
+      />
     </section>
   </div>
 </template>
@@ -11,18 +14,15 @@
 
   export default {
     layout: 'admin',
+    middleware: ['check-auth', 'auth'],
     components: {
       AdminPostForm
     },
-    data() {
-      return {
-        loadedPost: {
-          author: '',
-          title: '',
-          content: '',
-          thumbnailLink: 'https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg'
-        }
-      }
+    asyncData(context){
+      return context.app.$axios
+        .$get()
+        .then()
+        .catch()
     }
   }
 </script>
