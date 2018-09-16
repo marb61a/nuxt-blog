@@ -33,7 +33,21 @@
     },
     data() {
       return {
-        isLogin: true
+        isLogin: true,
+        email: "",
+        password: ""
+      }
+    },
+    methods: {
+      onSubmit(){
+        this.$store.dispatch("authenticateUser", {
+          isLogin: this.isLogin,
+          email: this.email,
+          password: this.password
+        })
+        .then(() => {
+          this.$router.push('/admin');
+        })
       }
     }
   }
