@@ -57,6 +57,9 @@ const createStore = () => {
       },
       setPosts(vuexContext, posts) {
         vuexContext.commit("setPosts", posts);
+      },
+      authenticateUser(vuexContext, authData){
+
       }
     },
     getters: {

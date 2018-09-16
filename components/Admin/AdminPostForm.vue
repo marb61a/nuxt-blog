@@ -15,6 +15,12 @@
     >
       Content
     </AppControlInput>
+    <AppControlInput
+      control-type="textarea"
+      v-model="editedPost.previewText"
+    >
+      Preview Text
+    </AppControlInput>
     <AppButton>Save</AppButton>
     <AppButton
       type="button"
@@ -50,7 +56,8 @@
           author: "",
           title: "",
           thumbnailLink: "",
-          content: ""
+          content: "",
+          previewText
         }
       }
     },
