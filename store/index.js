@@ -59,7 +59,30 @@ const createStore = () => {
         vuexContext.commit("setPosts", posts);
       },
       authenticateUser(vuexContext, authData){
+        let authUrl;
 
+        if(!authData.login) {
+
+        }
+
+        return this.$axios
+          .$post(authUrl, {
+            email: authData.email,
+            password: authData.password,
+            returnSecureToken: true
+          })
+          .then(result => {
+
+          })
+          .catch(e => console.log(e));
+      },
+      initAuth(vuexContext, req){
+        let token;
+        let expirationDate;
+
+        if(req) {
+
+        }
       }
     },
     getters: {

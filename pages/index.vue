@@ -11,9 +11,9 @@
   import PostList from '@/components/Posts/PostList';
 
   export default {
-    data(){
-      return {
-        loadedPosts: []
+    computed: {
+      loadedPosts() {
+        return this.$store.getters.loadedPosts;
       }
     }
   }
