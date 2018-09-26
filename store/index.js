@@ -119,8 +119,24 @@ const createStore = () => {
           if(!jwt) {
             return;
           }
-          
+
+          token = jwtCookie.split("=")[1];
+          expirationDate = req.headers.cookie
+            .split(";")
+            .find(c => c.trim().startsWith("expirationDate="))
+            .split("=")[1];
+        } else {
+          token = localStorage.getItem("token");
+          expirationDate = localStorage.getItem("tokenExpiration");
         }
+
+        if(new Date().getTime() > +expirationDate || !token) {
+          console.log("No token or invalid token");
+          vuexContext.dispatch("logout");
+          return;
+        }
+
+        vuexContext.commit("setToken", token);
       },
       logout(vueContext) {
         vuexContext.commit("clearToken");
