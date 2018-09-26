@@ -83,7 +83,23 @@ const createStore = () => {
           })
           .then(result => {
             vuexContext.commit("setToken", result.idToken);
-            
+
+            localStorage.setItem("token", result.idToken);
+            localStorage.setItem(
+              "tokenExpiration",
+              new Date().getTime() + Number.parseInt(result.expiresIn) * 1000
+            );
+
+            Cookie.set("jwt", result.idToken);
+            Cookie.set(
+              "expirationDate",
+              new Date().getTime() + Number.parseInt(result.expiresIn) * 1000
+            );
+
+            return this.$axios.$post(
+              'http://localhost:3000/api/track-data',
+              { data: 'Authenticated!' }
+            );
           })
           .catch(e => console.log(e));
       },
@@ -92,7 +108,18 @@ const createStore = () => {
         let expirationDate;
 
         if(req) {
+          if(!req.headers.cookie) {
+            return;
+          }
 
+          const jwtCookie = req.headers.cookie
+            .split(";")
+            .find(c => c.trim().startsWith("jwt="));
+          
+          if(!jwt) {
+            return;
+          }
+          
         }
       },
       logout(vueContext) {
