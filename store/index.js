@@ -19,6 +19,12 @@ const createStore = () => {
           post => post.id === editedPost.id
         );
         state.loadedPosts[postIndex] = editedPost
+      },
+      setToken(state, token) {
+        state.token = token
+      },
+      clearToken(state) {
+        state.token = null;
       }
     },
     actions: {
@@ -59,10 +65,14 @@ const createStore = () => {
         vuexContext.commit("setPosts", posts);
       },
       authenticateUser(vuexContext, authData){
-        let authUrl;
+        let authUrl =
+          "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=" 
+          + process.env.fbAPIKey;
 
         if(!authData.login) {
-
+          authUrl = 
+            "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" 
+            + process.env.fbAPIKey;
         }
 
         return this.$axios
@@ -72,7 +82,8 @@ const createStore = () => {
             returnSecureToken: true
           })
           .then(result => {
-
+            vuexContext.commit("setToken", result.idToken);
+            
           })
           .catch(e => console.log(e));
       },
@@ -83,11 +94,25 @@ const createStore = () => {
         if(req) {
 
         }
+      },
+      logout(vueContext) {
+        vuexContext.commit("clearToken");
+
+        Cookie.remove("jwt");
+        Cookie.remove("expirationDate");
+
+        if(process.client) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("tokenExpiration");
+        }
       }
     },
     getters: {
       loadedPosts(state) {
         return state.loadedPosts;
+      },
+      isAuthenticated(state) {
+        return state.token != null;
       }
     }
   });
