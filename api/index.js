@@ -20,4 +20,4 @@ router.post("/track-data", (req, res) => {
 module.exports = {
   path: '/api',
   handler: router
-}
+};
